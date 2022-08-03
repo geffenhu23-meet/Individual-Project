@@ -26,6 +26,9 @@ body {font-family: "Open Sans"}
   <a href="#" class="w3-bar-item w3-button"><i class="fa fa-twitter"></i></a>
   <a href="#" class="w3-bar-item w3-button"><i class="fa fa-linkedin"></i></a>
   <a href="#" class="w3-bar-item w3-button w3-right"><i class="fa fa-search"></i></a>
+  <a href="/all_products"><button>all_products</button></a>
+<a href="/signout"><button>signout</button>
+<a href="/cart"><button>cart</button>
 </div>
   
 <!-- w3-content defines a container for fixed size centered content, 
@@ -74,7 +77,20 @@ and is wrapped around the whole page content, except for the footer in this exam
                 <input type="submit" name="submit" value="Submit">
 
         </form>
+<ul id="myUL">
+                <!-- {{products}} -->
+                {% for p in products %}
 
+                    {% if current_user["localId"] == products[p]["uid"] %}
+
+                        <li>{{ products[p]["product"] }}</li>
+                        <img src="{{ products[p]['picture_link'] }}" alt="picture_link">
+
+                    {% endif %}
+
+                {%endfor%}
+
+            </ul>
             
 
                 
@@ -146,5 +162,6 @@ function likeFunction(x) {
 
 <a href="/all_products"><button>all_products</button></a>
 <a href="/signout"><button>signout</button>
+<a href="/cart"><button>cart</button>
 </body>
 </html>

@@ -45,6 +45,9 @@ body {font-family: "Open Sans"}
   <a href="#" class="w3-bar-item w3-button"><i class="fa fa-twitter"></i></a>
   <a href="#" class="w3-bar-item w3-button"><i class="fa fa-linkedin"></i></a>
   <a href="#" class="w3-bar-item w3-button w3-right"><i class="fa fa-search"></i></a>
+  <a href="/home"><button>home</button></a>
+<a href="/signout"><button>signout</button>
+<a href="/cart"><button>cart</button>
 </div>
   
 <!-- w3-content defines a container for fixed size centered content, 
@@ -54,7 +57,7 @@ and is wrapped around the whole page content, except for the footer in this exam
   <!-- Header -->
   <header class="w3-container w3-center w3-padding-48 w3-white">
     <h1 class="w3-xxxlarge"><b>ETSY</b></h1>
-    <h6>MY <span class="w3-tag">second hand products</span></h6>
+    <h6> <span class="w3-tag">second hand products</span></h6>
   </header>
 
   <!-- Image header -->
@@ -94,12 +97,15 @@ and is wrapped around the whole page content, except for the footer in this exam
  -->
             
 <ul id="myUL">
-                
-                {%for i in Product%}
-                <li>{{Product[i]["product"]}}</li>
-                <img src=" {{Product[i]['picture_link']}}" alt="picture_link">
+                <!-- {{Product}} -->
+                {%for productid in Product%}
+                <li>{{Product[productid]["product"]}}</li>
+                <img src=" {{Product[productid]['picture_link']}}" alt="picture_link">
                 <div>
-                    <a href="/cart"><button>add to cart</button></a>
+                    <!-- <form method="post" action="/cart">
+                    <input type="submit" name="submit" value="add to cart">
+                </form> -->
+                <a href="add_to_cart/{{productid}}">add to cart</a>
                 </div>
                 
 
@@ -178,7 +184,7 @@ function likeFunction(x) {
 
 <a href="/home"><button>home</button></a>
 <a href="/signout"><button>signout</button>
-
+<a href="/cart"><button>cart</button>
 
 
 

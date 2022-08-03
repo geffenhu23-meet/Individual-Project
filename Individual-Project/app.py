@@ -48,7 +48,7 @@ def signup():
         bio = request.form['bio']
         try:
            login_session['user'] = auth.create_user_with_email_and_password(email, password)
-           user = {"name": full_name, "email": email, "password":password, "username":username, "bio":bio}
+           user = {"name": full_name, "email": email, "password":password, "username":username, "bio":bio, "cart":[]}
            db.child("Users").child(login_session['user']['localId']).set(user)
            return render_template('home.html')
         except Exception as e:
@@ -65,15 +65,21 @@ def home():
         product = request.form['product']
         picture_link = request.form['picture_link']
         try:
-            Product = {"product": product, "picture_link": picture_link}
+            Product = {"product": product, "picture_link": picture_link, "uid": login_session['user']['localId']}
             db.child("product").push(Product)
-            return redirect(url_for("all_products"))
+            Product = db.child("product").get().val()
+            return redirect(url_for("all_products"), products = Product, current_user = login_session["user"])
         except:
             error = "Authentication failed"
-            return render_template("home.html")
+            Product = db.child("product").get().val()
+            return render_template("home.html", products = Product, current_user = login_session["user"])
             
     else:
-        return render_template('home.html')
+        try:
+            Product = db.child("product").get().val()
+            return render_template('home.html', products = Product, current_user = login_session["user"])
+        except:
+            return render_template('home.html')
 
 
 @app.route('/signout')
@@ -87,10 +93,42 @@ def all_products():
     Product = db.child("product").get().val()
     return render_template("all_products.html", Product=Product)
 
-@app.route('/cart')
+
+
+
+
+@app.route('/add_to_cart/<string:productid>',methods=['GET', 'POST'])
+def add_to_cart(productid):
+    try:
+
+        adcp= db.child("product").child(productid).get().val()
+        db.child("Users").child(login_session['user']['localId']).child('cart').child(productid).set(adcp)
+     
+        return redirect(url_for('all_products'))
+    except:
+        return redirect(url_for('all_products'))
+
+
+
+
+
+
+
+@app.route('/cart', methods=['GET', 'POST'])
 def cart():
-    Product = db.child("product").get().val()
-    return render_template("cart.html", Product=Product)
+    try:
+        # cc = db.child("product").get().val()
+        cc = db.child("Users").child(login_session['user']['localId']).child('cart').get().val()
+
+            
+        return render_template('cart.html', products = cc, current_user = login_session["user"])
+    except:
+        return render_template('cart.html')
+
+    # return render_template("all_products.html", cc=cc)
+
+    
+   
 
 
 #Code goes above here
