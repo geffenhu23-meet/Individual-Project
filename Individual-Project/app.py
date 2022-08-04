@@ -68,7 +68,7 @@ def home():
             Product = {"product": product, "picture_link": picture_link, "uid": login_session['user']['localId']}
             db.child("product").push(Product)
             Product = db.child("product").get().val()
-            return redirect(url_for("all_products"), products = Product, current_user = login_session["user"])
+            return redirect(url_for("home"), products = Product, current_user = login_session["user"])
         except:
             error = "Authentication failed"
             Product = db.child("product").get().val()
